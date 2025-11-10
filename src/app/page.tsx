@@ -11,7 +11,25 @@ interface AdditionalTicket {
   idNumber: string;
 }
 
+interface UserProfile {
+  firstName: string;
+  lastName: string;
+  idNumber: string;
+  email: string;
+  phone: string;
+}
+
 export default function Home() {
+  const [userProfile, setUserProfile] = useState<UserProfile>({
+    firstName: '',
+    lastName: '',
+    idNumber: '',
+    email: '',
+    phone: ''
+  });
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [profileCompleted, setProfileCompleted] = useState(false);
+
   const [mainTicket, setMainTicket] = useState(false);
   const [additionalTickets, setAdditionalTickets] = useState<AdditionalTicket[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -24,6 +42,18 @@ export default function Home() {
   });
 
   const canAddMoreTickets = additionalTickets.length < 2;
+
+  const handleSaveProfile = () => {
+    if (userProfile.firstName && userProfile.lastName && userProfile.idNumber) {
+      setProfileCompleted(true);
+      setIsEditingProfile(false);
+      console.log('Perfil salvo:', userProfile);
+    }
+  };
+
+  const handleEditProfile = () => {
+    setIsEditingProfile(true);
+  };
 
   const handleRequestMainTicket = () => {
     setMainTicket(true);
@@ -89,14 +119,113 @@ export default function Home() {
     <Page back={false}>
       <List>
         <Section
+          header="👤 O Meu Perfil"
+          footer="Complete o seu perfil para poder solicitar bilhetes"
+        >
+          {!profileCompleted && !isEditingProfile ? (
+            <Cell
+              subtitle="Clique para preencher os seus dados"
+              onClick={() => setIsEditingProfile(true)}
+              style={{ cursor: 'pointer' }}
+            >
+              Criar Perfil
+            </Cell>
+          ) : profileCompleted && !isEditingProfile ? (
+            <>
+              <Cell subtitle={`${userProfile.firstName} ${userProfile.lastName}`}>
+                Nome Completo
+              </Cell>
+              <Cell subtitle={userProfile.idNumber}>
+                Cartão de Cidadão
+              </Cell>
+              <Cell subtitle={userProfile.email || 'Não fornecido'}>
+                Email
+              </Cell>
+              <Cell subtitle={userProfile.phone || 'Não fornecido'}>
+                Telefone
+              </Cell>
+              <Cell
+                onClick={handleEditProfile}
+                style={{ cursor: 'pointer', color: 'var(--tgui--link_color)' }}
+              >
+                ✏️ Editar Perfil
+              </Cell>
+            </>
+          ) : null}
+        </Section>
+
+        {isEditingProfile && (
+          <Section header="Dados do Perfil">
+            <div style={{ padding: '12px 16px' }}>
+              <Input
+                header="Primeiro Nome *"
+                placeholder="Ex: João"
+                value={userProfile.firstName}
+                onChange={(e) => setUserProfile({ ...userProfile, firstName: e.target.value })}
+                style={{ marginBottom: '12px' }}
+              />
+              <Input
+                header="Último Nome *"
+                placeholder="Ex: Silva"
+                value={userProfile.lastName}
+                onChange={(e) => setUserProfile({ ...userProfile, lastName: e.target.value })}
+                style={{ marginBottom: '12px' }}
+              />
+              <Input
+                header="Número de Cartão de Cidadão *"
+                placeholder="Ex: 12345678"
+                value={userProfile.idNumber}
+                onChange={(e) => setUserProfile({ ...userProfile, idNumber: e.target.value })}
+                style={{ marginBottom: '12px' }}
+              />
+              <Input
+                header="Email"
+                placeholder="Ex: joao.silva@email.com"
+                value={userProfile.email}
+                onChange={(e) => setUserProfile({ ...userProfile, email: e.target.value })}
+                style={{ marginBottom: '12px' }}
+              />
+              <Input
+                header="Telefone"
+                placeholder="Ex: 912345678"
+                value={userProfile.phone}
+                onChange={(e) => setUserProfile({ ...userProfile, phone: e.target.value })}
+                style={{ marginBottom: '16px' }}
+              />
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <Button
+                  stretched
+                  size="m"
+                  mode="filled"
+                  onClick={handleSaveProfile}
+                  disabled={!userProfile.firstName || !userProfile.lastName || !userProfile.idNumber}
+                >
+                  Guardar Perfil
+                </Button>
+                {profileCompleted && (
+                  <Button
+                    stretched
+                    size="m"
+                    mode="plain"
+                    onClick={() => setIsEditingProfile(false)}
+                  >
+                    Cancelar
+                  </Button>
+                )}
+              </div>
+            </div>
+          </Section>
+        )}
+
+        <Section
           header="🎫 Bilheteira Alvinegra"
           footer="Solicite o seu bilhete para o próximo jogo. Pode adicionar até 2 bilhetes adicionais."
         >
           {!mainTicket ? (
             <Cell
-              subtitle="Clique para solicitar o seu bilhete"
-              onClick={handleRequestMainTicket}
-              style={{ cursor: 'pointer' }}
+              subtitle={profileCompleted ? "Clique para solicitar o seu bilhete" : "Complete o seu perfil primeiro"}
+              onClick={profileCompleted ? handleRequestMainTicket : undefined}
+              style={{ cursor: profileCompleted ? 'pointer' : 'not-allowed', opacity: profileCompleted ? 1 : 0.5 }}
             >
               Pedir o Meu Bilhete
             </Cell>
