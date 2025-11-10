@@ -12,7 +12,6 @@ import { AppRoot } from '@telegram-apps/telegram-ui';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ErrorPage } from '@/components/ErrorPage';
 import { useDidMount } from '@/hooks/useDidMount';
-import { setLocale } from '@/core/i18n/locale';
 
 import './styles.css';
 
@@ -24,7 +23,7 @@ function RootInner({ children }: PropsWithChildren) {
 
   // Set the user locale.
   useEffect(() => {
-    initDataUser && setLocale(initDataUser.language_code);
+    initDataUser;
   }, [initDataUser]);
 
   return (
