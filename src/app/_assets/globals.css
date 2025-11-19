@@ -1,3 +1,10 @@
+:root {
+  --tg-theme-button-color: #9b51e0;
+  --tg-theme-button-text-color: #ffffff;
+  --tg-theme-link-color: #9b51e0;
+  --tg-theme-accent-text-color: #9b51e0;
+}
+
 body {
   background: var(--tg-theme-secondary-bg-color, white);
   padding: 0;

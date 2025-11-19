@@ -96,7 +96,7 @@
     padding: 12px;
     border-radius: 10px;
     /* Matched to TelegramTicketApp inputs/buttons */
-    background-color: var(--tg-theme-button-color, #2481cc);
+    background-color: var(--tg-theme-button-color, #9b51e0);
     color: var(--tg-theme-button-text-color, #fff);
     border: none;
     font-size: 16px;

@@ -32,7 +32,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--tg-theme-button-color, #3390ec);
+  background: var(--tg-theme-button-color, #9b51e0);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,7 +63,7 @@
 .countValue {
   font-size: 20px;
   font-weight: 600;
-  color: var(--tg-theme-button-color, #3390ec);
+  color: var(--tg-theme-button-color, #9b51e0);
 }
 
 .countLabel {
@@ -167,7 +167,7 @@
 
 .checkboxChecked {
   border: none;
-  background: var(--tg-theme-button-color, #3390ec);
+  background: var(--tg-theme-button-color, #9b51e0);
 }
 
 .checkboxUnchecked {
@@ -227,7 +227,7 @@
 }
 
 .buttonPrimary {
-  background: var(--tg-theme-button-color, #3390ec);
+  background: var(--tg-theme-button-color, #9b51e0);
   color: var(--tg-theme-button-text-color, #ffffff);
 }
 
@@ -236,7 +236,7 @@
   padding: 16px 8px;
   background: transparent;
   border: none;
-  color: var(--tg-theme-button-color, #3390ec);
+  color: var(--tg-theme-button-color, #9b51e0);
   cursor: pointer;
   font-size: 16px;
   font-weight: 400;
@@ -257,7 +257,7 @@
   padding: 16px;
   background: transparent;
   border: none;
-  color: var(--tg-theme-button-color, #3390ec);
+  color: var(--tg-theme-button-color, #9b51e0);
   cursor: pointer;
   font-size: 16px;
   text-align: left;
@@ -281,7 +281,7 @@
 }
 
 .summaryValueSuccess {
-  color: var(--tg-theme-button-color, #34c759);
+  color: var(--tg-theme-button-color, #9b51e0);
 }
 
 .summaryValueNeutral {
@@ -303,7 +303,7 @@
 .totalValue {
   font-weight: 700;
   font-size: 20px;
-  color: var(--tg-theme-button-color, #3390ec);
+  color: var(--tg-theme-button-color, #9b51e0);
 }
 
 .listItem {
