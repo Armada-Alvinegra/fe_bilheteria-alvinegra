@@ -9,8 +9,8 @@ import 'normalize.css/normalize.css';
 import './_assets/globals.css';
 
 export const metadata: Metadata = {
-  title: 'Your Application Title Goes Here',
-  description: 'Your application description goes here',
+  title: 'Bilheteira Alvinegra',
+  description: 'A bilheteira para a Armada Alvinegra arranjar bilhetes para os jogos do nosso grande Nacional',
 };
 
 export default async function RootLayout({ children }: PropsWithChildren) {

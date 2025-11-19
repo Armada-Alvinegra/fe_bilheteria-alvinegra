@@ -1,7 +1,7 @@
 'use client';
 
-import TelegramTicketApp from '@/components/TelegramTicketApp';
+import GamesList from '@/components/GamesList';
 
 export default function Home() {
-  return <TelegramTicketApp />;
+  return <GamesList />;
 }

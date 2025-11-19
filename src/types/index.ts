@@ -12,6 +12,17 @@ export interface AdditionalTicket {
     reserved: boolean;
 }
 
+export interface Game {
+    id: number;
+    home_team: string
+    away_team: string;
+    home_team_image?: string;
+    away_team_image?: string;
+    date: string;
+    time: string;
+    venue: string;
+}
+
 export interface TicketsState {
     main: boolean;
     additional: AdditionalTicket[];
