@@ -17,9 +17,9 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 
 
   return (
-    <html  suppressHydrationWarning>
-      <body>
-          <Root>{children}</Root>
+    <html suppressHydrationWarning>
+      <body suppressHydrationWarning>
+        <Root>{children}</Root>
       </body>
     </html>
   );

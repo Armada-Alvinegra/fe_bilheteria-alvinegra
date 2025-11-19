@@ -1,0 +1,316 @@
+.container {
+  min-height: 100vh;
+  background: var(--tg-theme-bg-color, #ffffff);
+  color: var(--tg-theme-text-color, #000000);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.loading {
+  min-height: 100vh;
+  background: var(--tg-theme-bg-color, #ffffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+/* Header Styles */
+.header {
+  padding: 16px;
+  border-bottom: 0.5px solid var(--tg-theme-hint-color, #e5e5e5);
+  background: var(--tg-theme-bg-color, #ffffff);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--tg-theme-button-color, #3390ec);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--tg-theme-button-text-color, #ffffff);
+}
+
+.userInfo {
+  flex: 1;
+}
+
+.userName {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.userHandle {
+  font-size: 14px;
+  color: var(--tg-theme-hint-color, #999999);
+  margin-top: 2px;
+}
+
+.ticketCount {
+  text-align: right;
+}
+
+.countValue {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--tg-theme-button-color, #3390ec);
+}
+
+.countLabel {
+  font-size: 13px;
+  color: var(--tg-theme-hint-color, #999999);
+}
+
+/* Section Styles */
+.section {
+  padding: 12px 0;
+}
+
+.sectionBg {
+  background: var(--tg-theme-secondary-bg-color, #f4f4f5);
+}
+
+.sectionHeader {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--tg-theme-hint-color, #999999);
+  padding: 0 16px 8px 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sectionHeaderFlex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card {
+  background: var(--tg-theme-bg-color, #ffffff);
+  border-top: 0.5px solid var(--tg-theme-hint-color, #e5e5e5);
+  border-bottom: 0.5px solid var(--tg-theme-hint-color, #e5e5e5);
+}
+
+.cardPadding {
+  padding: 16px;
+}
+
+/* Button Styles */
+.listButton {
+  width: 100%;
+  padding: 16px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  color: var(--tg-theme-text-color, #000000);
+  font-size: 16px;
+}
+
+.buttonContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.icon {
+  font-size: 22px;
+}
+
+.textContainer {
+  text-align: left;
+  flex: 1;
+  min-width: 0;
+}
+
+.mainText {
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subText {
+  font-size: 14px;
+  color: var(--tg-theme-hint-color, #999999);
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.checkbox {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 12px;
+}
+
+.checkboxChecked {
+  border: none;
+  background: var(--tg-theme-button-color, #3390ec);
+}
+
+.checkboxUnchecked {
+  border: 2px solid var(--tg-theme-hint-color, #c8c7cc);
+  background: transparent;
+}
+
+/* Form Styles */
+.formContainer {
+  padding: 16px;
+}
+
+.formGroup {
+  margin-bottom: 12px;
+}
+
+.formGroupLast {
+  margin-bottom: 16px;
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  color: var(--tg-theme-hint-color, #999999);
+  margin-bottom: 6px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid var(--tg-theme-hint-color, #e5e5e5);
+  border-radius: 10px;
+  background: var(--tg-theme-bg-color, #ffffff);
+  color: var(--tg-theme-text-color, #000000);
+  box-sizing: border-box;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.buttonSecondary {
+  background: var(--tg-theme-secondary-bg-color, #f4f4f5);
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.buttonPrimary {
+  background: var(--tg-theme-button-color, #3390ec);
+  color: var(--tg-theme-button-text-color, #ffffff);
+}
+
+/* Action Buttons */
+.actionButton {
+  padding: 16px 8px;
+  background: transparent;
+  border: none;
+  color: var(--tg-theme-button-color, #3390ec);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.destructiveButton {
+  padding: 16px;
+  background: transparent;
+  border: none;
+  color: var(--tg-theme-destructive-text-color, #ff3b30);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.addButton {
+  width: 100%;
+  padding: 16px;
+  background: transparent;
+  border: none;
+  color: var(--tg-theme-button-color, #3390ec);
+  cursor: pointer;
+  font-size: 16px;
+  text-align: left;
+  font-weight: 400;
+}
+
+/* Summary Styles */
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+
+.summaryLabel {
+  color: var(--tg-theme-hint-color, #999999);
+}
+
+.summaryValue {
+  font-weight: 500;
+}
+
+.summaryValueSuccess {
+  color: var(--tg-theme-button-color, #34c759);
+}
+
+.summaryValueNeutral {
+  color: var(--tg-theme-hint-color, #999999);
+}
+
+.totalRow {
+  border-top: 0.5px solid var(--tg-theme-hint-color, #e5e5e5);
+  padding-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 17px;
+}
+
+.totalLabel {
+  font-weight: 600;
+}
+
+.totalValue {
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--tg-theme-button-color, #3390ec);
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+}
+
+.listItemBorder {
+  border-bottom: 0.5px solid var(--tg-theme-hint-color, #e5e5e5);
+}
