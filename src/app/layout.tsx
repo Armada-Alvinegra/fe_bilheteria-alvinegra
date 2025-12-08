@@ -10,7 +10,7 @@ import './_assets/globals.css';
 
 export const metadata: Metadata = {
   title: 'Bilheteira Alvinegra',
-  description: 'A bilheteira para a Armada Alvinegra arranjar bilhetes para os jogos do nosso grande Nacional',
+  description: 'A bilheteira para a Armada Alvinegra. Permite arranjar bilhetes para os jogos do nosso grande Nacional',
 };
 
 export default async function RootLayout({ children }: PropsWithChildren) {
