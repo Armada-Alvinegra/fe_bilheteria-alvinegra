@@ -26,7 +26,7 @@ const MOCK_GAMES: Game[] = [
         away_team_image: 'https://upload.wikimedia.org/wikipedia/pt/d/d2/CD_Nacional_Logo.png',
         date: '2024-05-27',
         time: '18:00',
-        venue: 'Estádio da Madeira',
+        venue: 'Estádio da Luz',
     },
 ];
 

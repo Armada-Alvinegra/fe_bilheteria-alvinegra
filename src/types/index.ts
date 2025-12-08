@@ -3,6 +3,7 @@ export interface User {
     firstName: string;
     lastName: string;
     username?: string;
+    identification_number?: number;
 }
 
 export interface AdditionalTicket {
@@ -63,6 +64,7 @@ declare global {
                         first_name: string;
                         last_name: string;
                         username?: string;
+                        identification_number?: number;
                     };
                 };
                 HapticFeedback: {
