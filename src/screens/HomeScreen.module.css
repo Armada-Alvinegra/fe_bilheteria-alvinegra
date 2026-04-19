@@ -1,0 +1,453 @@
+.screen {
+  position: relative;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-body);
+  overflow: hidden;
+}
+
+/* ── Hero header ── */
+.heroHeader {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: 0 0 24px 24px;
+}
+
+.heroHeader img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: saturate(1.05) contrast(1.05);
+  transition: filter 0.5s ease;
+}
+
+.heroHeaderGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(5,3,9,0.15) 0%, transparent 50%, rgba(5,3,9,0.55) 100%);
+}
+
+.avatarBtn {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 6, 20, 0.72);
+  backdrop-filter: blur(10px);
+  color: var(--cyan);
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* ── Footer ── */
+.footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  background: var(--surface-bar);
+  border-top: 1px solid var(--line);
+  backdrop-filter: blur(12px);
+  margin-top: 14px;
+}
+
+.footerTitle {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--white);
+  line-height: 1.2;
+}
+
+.footerSub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1.5px;
+}
+
+/* heroGradient removido — substituído por heroHeaderGradient */
+
+.speechBubble {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  max-width: 180px;
+  z-index: 3;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: var(--surface-bubble);
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.2) inset, 0 0 20px rgba(34, 211, 238, 0.3);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: scale(0.88) translateY(-6px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.speechBubbleVisible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.cursor {
+  display: inline-block;
+  color: var(--cyan);
+  font-weight: 400;
+  animation: cursorBlink 0.7s steps(1) infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.speechBubbleLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--cyan);
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+
+.speechBubbleText {
+  position: relative;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  color: var(--white);
+  line-height: 1.35;
+  font-weight: 500;
+}
+
+.speechBubblePhantom {
+  visibility: hidden;
+  display: block;
+}
+
+.speechBubbleTyped {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--white);
+}
+
+.speechTail {
+  position: absolute;
+  bottom: -7px;
+  right: 28px;
+  width: 14px;
+  height: 14px;
+  transform: rotate(45deg);
+  background: var(--surface-bubble);
+  border-right: 1px solid rgba(34, 211, 238, 0.4);
+  border-bottom: 1px solid rgba(34, 211, 238, 0.4);
+}
+
+.speechTrailSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* heroFooter / heroStatus / heroTitle removidos — hero é agora só imagem */
+
+.liveBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(16, 245, 168, 0.12);
+  border: 1px solid rgba(16, 245, 168, 0.4);
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--success);
+  box-shadow: 0 0 8px var(--success);
+  animation: pulse 1.6s infinite;
+}
+
+.liveLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--success);
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+
+/* ── Match card ── */
+.matchSection {
+  position: relative;
+  z-index: 2;
+  margin: 18px 14px 0;
+}
+
+.matchSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 8px;
+}
+
+.matchSectionLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.matchSectionTimer {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--cyan);
+  letter-spacing: 1.5px;
+}
+
+.matchCompetition {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+.matchTeams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.teamCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.teamName {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--white);
+}
+
+.teamBadgeHome {
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(168, 85, 247, 0.13);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--violet);
+  letter-spacing: 1.2px;
+  font-weight: 600;
+}
+
+.teamBadgeAway {
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(237, 233, 254, 0.08);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 1.2px;
+  font-weight: 600;
+}
+
+.vsCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 70px;
+}
+
+.vsText {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px var(--cyan);
+}
+
+.vsTime {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--white);
+  letter-spacing: 1.5px;
+}
+
+.vsDate {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+.matchVenue {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted-strong);
+  letter-spacing: 0.5px;
+}
+
+.stockRow {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  margin-top: 12px;
+  margin-bottom: 5px;
+}
+
+.stockValue { color: var(--cyan); }
+
+.stockBar {
+  height: 5px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(237, 233, 254, 0.08);
+  border: 1px solid var(--line);
+}
+
+.stockFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--violet), var(--cyan));
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+/* ── Match list ── */
+.matchList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.matchCardCtas {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+}
+
+.matchCardBtns {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+}
+
+/* ── Bilhetes no chat ── */
+.upcomingMsg {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: rgba(148, 163, 184, 0.07);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ticketsInChat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: rgba(16, 245, 168, 0.08);
+  border: 1px solid rgba(16, 245, 168, 0.25);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--success);
+  letter-spacing: 0.5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ticketsInChat span { flex: 1; }
+
+.openChatBtn {
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(16, 245, 168, 0.15);
+  border: 1px solid rgba(16, 245, 168, 0.4);
+  color: var(--success);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── CTAs (global, mantido para compatibilidade) ── */
+.ctas {
+  position: relative;
+  z-index: 2;
+  padding: 16px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ctaRow {
+  display: flex;
+  gap: 10px;
+}
+
+/* ── Tagline ── */
+.tagline {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 4px 0 18px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 2.5px;
+}

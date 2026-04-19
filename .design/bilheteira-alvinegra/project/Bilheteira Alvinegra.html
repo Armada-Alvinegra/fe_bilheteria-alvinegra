@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Bilheteira Alvinegra</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background: #030108;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    button { font-family: inherit; }
+    input, textarea { font-family: inherit; color-scheme: dark; }
+    input::placeholder { color: rgba(237,233,254,0.3); }
+
+    /* Ambient stadium backdrop */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 800px 500px at 20% -10%, rgba(124,58,237,0.25), transparent 60%),
+        radial-gradient(ellipse 700px 500px at 90% 110%, rgba(6,182,212,0.18), transparent 55%),
+        radial-gradient(ellipse 600px 300px at 50% 50%, rgba(168,85,247,0.06), transparent 70%);
+      z-index: 0;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.15); }
+    }
+    @keyframes pulseBadge {
+      0%, 100% { box-shadow: 0 0 24px rgba(251,191,36,0.5), inset 0 0 0 1px rgba(251,191,36,0.2); }
+      50% { box-shadow: 0 0 36px rgba(251,191,36,0.9), inset 0 0 0 1px rgba(251,191,36,0.4); }
+    }
+    @keyframes neonFlicker {
+      0%, 100% { opacity: 1; }
+      72% { opacity: 1; }
+      74% { opacity: 0.85; }
+      76% { opacity: 1; }
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(12px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(168,85,247,0.3); border-radius: 2px; }
+
+    .app-shell {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px 16px;
+      position: relative; z-index: 1;
+    }
+
+    .screen-wrap {
+      animation: slideIn 0.35s ease;
+    }
+
+    /* Tweaks panel */
+    .tweaks {
+      position: fixed; right: 18px; bottom: 18px; z-index: 1000;
+      width: 260px;
+      background: linear-gradient(180deg, rgba(20,8,40,0.95), rgba(8,4,20,0.98));
+      border: 1px solid rgba(168,85,247,0.45);
+      border-radius: 14px;
+      padding: 14px;
+      color: #f5f3ff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(34,211,238,0.15) inset;
+      backdrop-filter: blur(12px);
+      display: none;
+    }
+    .tweaks.active { display: block; }
+    .tweaks h4 {
+      margin: 0 0 10px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px; letter-spacing: 2px; font-weight: 700;
+      color: #22d3ee;
+      text-transform: uppercase;
+    }
+    .tweaks label {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 1.5px;
+      color: rgba(237,233,254,0.6); text-transform: uppercase;
+      margin: 10px 0 4px;
+    }
+    .seg {
+      display: grid; gap: 4px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .seg.two { grid-template-columns: repeat(2, 1fr); }
+    .seg button {
+      padding: 7px 4px; border-radius: 7px;
+      background: rgba(8,4,20,0.6);
+      border: 1px solid rgba(168,85,247,0.2);
+      color: rgba(237,233,254,0.7);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 1px;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    .seg button.on {
+      background: linear-gradient(180deg, #a855f7, #7c3aed);
+      border-color: #a855f7;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(168,85,247,0.45);
+    }
+
+    /* Status nudge */
+    .tg-badge {
+      position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
+      z-index: 100;
+      padding: 4px 10px;
+      background: rgba(20,8,40,0.8);
+      border: 1px solid rgba(34,211,238,0.3);
+      border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 1.5px;
+      color: #22d3ee;
+      backdrop-filter: blur(8px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- React + Babel -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="components/ios-frame.jsx"></script>
+  <script type="text/babel" src="components/shared.jsx"></script>
+  <script type="text/babel" src="components/screen-login.jsx"></script>
+  <script type="text/babel" src="components/screen-profile.jsx"></script>
+  <script type="text/babel" src="components/screen-home.jsx"></script>
+  <script type="text/babel" src="components/screen-request.jsx"></script>
+  <script type="text/babel" src="components/screen-confirmation.jsx"></script>
+  <script type="text/babel" src="components/screen-history.jsx"></script>
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const TWEAKS = /*EDITMODE-BEGIN*/{
+      "screen": "home",
+      "status": "pending",
+      "frame": "phone",
+      "accent": "violet",
+      "authed": true
+    }/*EDITMODE-END*/;
+
+    function App() {
+      const [screen, setScreen] = React.useState(() => {
+        try { return localStorage.getItem('aa:screen') || TWEAKS.screen; } catch { return TWEAKS.screen; }
+      });
+      const [status, setStatus] = React.useState(() => {
+        try { return localStorage.getItem('aa:status') || TWEAKS.status; } catch { return TWEAKS.status; }
+      });
+      const [frame, setFrame] = React.useState(TWEAKS.frame);
+      const [user, setUser] = React.useState(() => {
+        try {
+          const stored = localStorage.getItem('aa:user');
+          if (stored) return JSON.parse(stored);
+        } catch {}
+        return TWEAKS.authed ? { name: 'Bruno Silva', memberId: '2047', tgHandle: '@brunos_md', since: 2018 } : null;
+      });
+      const [tweaksOpen, setTweaksOpen] = React.useState(false);
+
+      React.useEffect(() => { try { localStorage.setItem('aa:screen', screen); } catch {} }, [screen]);
+      React.useEffect(() => { try { localStorage.setItem('aa:status', status); } catch {} }, [status]);
+      React.useEffect(() => {
+        try {
+          if (user) localStorage.setItem('aa:user', JSON.stringify(user));
+          else localStorage.removeItem('aa:user');
+        } catch {}
+      }, [user]);
+
+      // Tweaks host protocol
+      React.useEffect(() => {
+        const handler = (e) => {
+          if (!e.data || typeof e.data !== 'object') return;
+          if (e.data.type === '__activate_edit_mode') setTweaksOpen(true);
+          if (e.data.type === '__deactivate_edit_mode') setTweaksOpen(false);
+        };
+        window.addEventListener('message', handler);
+        window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+        return () => window.removeEventListener('message', handler);
+      }, []);
+
+      // Choose screen
+      let content;
+      if (!user) {
+        content = <LoginScreen onLogin={(u) => { setUser(u); setScreen('home'); }}/>;
+      } else if (screen === 'home') {
+        content = <HomeScreen
+          user={user}
+          onRequest={() => setScreen('request')}
+          onHistory={() => setScreen('history')}
+          onProfile={() => setScreen('profile')}
+        />;
+      } else if (screen === 'profile') {
+        content = <ProfileScreen
+          user={user}
+          onBack={() => setScreen('home')}
+          onLogout={() => { setUser(null); setScreen('home'); }}
+        />;
+      } else if (screen === 'request') {
+        content = <RequestScreen
+          user={user}
+          onBack={() => setScreen('home')}
+          onSubmit={() => { setStatus('pending'); setScreen('confirmation'); }}
+        />;
+      } else if (screen === 'confirmation') {
+        content = <ConfirmationScreen
+          status={status}
+          onHome={() => setScreen('home')}
+          onHistory={() => setScreen('history')}
+        />;
+      } else if (screen === 'history') {
+        content = <HistoryScreen
+          onBack={() => setScreen('home')}
+          onOpenItem={(it) => { setStatus(it.status); setScreen('confirmation'); }}
+        />;
+      }
+
+      // Frame
+      const deviceW = 390;
+      const deviceH = 780;
+
+      return (
+        <div className="app-shell">
+          <div className="tg-badge">◉ TELEGRAM MINI APP · @ArmadaAlvinegraBot</div>
+
+          {frame === 'phone' ? (
+            <div style={{
+              width: deviceW + 18, // bezel
+              borderRadius: 54,
+              padding: 9,
+              background: 'linear-gradient(180deg, #222, #0a0614 60%, #000)',
+              boxShadow: '0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(168,85,247,0.2), 0 0 80px rgba(168,85,247,0.2)',
+              position: 'relative',
+            }}>
+              <div style={{
+                width: deviceW, height: deviceH,
+                borderRadius: 46, overflow: 'hidden',
+                position: 'relative',
+                background: '#050309',
+              }}>
+                {/* Dynamic island */}
+                <div style={{
+                  position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)',
+                  width: 110, height: 30, borderRadius: 20, background: '#000', zIndex: 100,
+                }}/>
+                {/* Status bar */}
+                <div style={{
+                  position: 'absolute', top: 0, left: 0, right: 0, height: 50,
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '16px 22px 0', zIndex: 90,
+                  fontFamily: 'Space Grotesk', fontSize: 14, fontWeight: 600, color: '#fff',
+                  pointerEvents: 'none',
+                }}>
+                  <span>20:47</span>
+                  <span style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
+                    <svg width="16" height="11" viewBox="0 0 16 11"><rect x="0" y="7" width="3" height="4" rx="0.5" fill="#fff"/><rect x="4" y="5" width="3" height="6" rx="0.5" fill="#fff"/><rect x="8" y="3" width="3" height="8" rx="0.5" fill="#fff"/><rect x="12" y="0" width="3" height="11" rx="0.5" fill="#fff"/></svg>
+                    <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="3" stroke="#fff" fill="none" opacity="0.5"/><rect x="2" y="2" width="15" height="7" rx="1.5" fill="#fff"/></svg>
+                  </span>
+                </div>
+                {/* Content */}
+                <div key={screen} className="screen-wrap" style={{ width: '100%', height: '100%', overflowY: 'auto', overflowX: 'hidden', paddingTop: 42, paddingBottom: 0 }}>
+                  {content}
+                </div>
+                {/* Home indicator */}
+                <div style={{
+                  position: 'absolute', bottom: 6, left: '50%', transform: 'translateX(-50%)',
+                  width: 120, height: 4, borderRadius: 999, background: 'rgba(245,243,255,0.4)',
+                  zIndex: 200,
+                }}/>
+              </div>
+            </div>
+          ) : (
+            <div style={{
+              width: deviceW, height: deviceH,
+              borderRadius: 18, overflow: 'hidden',
+              background: '#050309',
+              boxShadow: '0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(168,85,247,0.3)',
+            }}>
+              <div key={screen} className="screen-wrap" style={{ width: '100%', height: '100%', overflowY: 'auto' }}>
+                {content}
+              </div>
+            </div>
+          )}
+
+          {/* Tweaks panel */}
+          <div className={`tweaks ${tweaksOpen ? 'active' : ''}`}>
+            <h4>TWEAKS</h4>
+
+            <label>Ecrã</label>
+            <div className="seg" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+              {[['home','Início'],['request','Pedido'],['confirmation','Estado'],['history','Hist.'],['profile','Perfil']].map(([v,l]) => (
+                <button key={v} className={screen === v ? 'on' : ''} onClick={() => setScreen(v)}>{l}</button>
+              ))}
+            </div>
+
+            <label>Sessão</label>
+            <div className="seg two">
+              <button className={user ? 'on' : ''} onClick={() => setUser({ name: 'Bruno Silva', memberId: '2047', tgHandle: '@brunos_md', since: 2018 })}>Autenticado</button>
+              <button className={!user ? 'on' : ''} onClick={() => setUser(null)}>Login</button>
+            </div>
+
+            <label>Estado do pedido (no ecrã Estado)</label>
+            <div className="seg">
+              {[['pending','Pendente'],['approved','Aprovado'],['rejected','Recusado']].map(([v,l]) => (
+                <button key={v} className={status === v ? 'on' : ''} onClick={() => { setStatus(v); if (screen !== 'confirmation') setScreen('confirmation'); }}>{l}</button>
+              ))}
+            </div>
+
+            <label>Chrome</label>
+            <div className="seg two">
+              <button className={frame === 'phone' ? 'on' : ''} onClick={() => setFrame('phone')}>iPhone</button>
+              <button className={frame === 'bare' ? 'on' : ''} onClick={() => setFrame('bare')}>Só ecrã</button>
+            </div>
+
+            <div style={{
+              marginTop: 12, paddingTop: 10,
+              borderTop: '1px dashed rgba(168,85,247,0.2)',
+              fontFamily: 'JetBrains Mono', fontSize: 9,
+              color: 'rgba(237,233,254,0.4)', letterSpacing: 1, lineHeight: 1.5,
+            }}>
+              AA//2014 · v0.1 · Protótipo
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
+</body>
+</html>
