@@ -14,7 +14,7 @@ export default function ProfileScreen({ onBack, onLogout, onToggleTheme, theme =
   const [draftSince, setDraftSince] = useState(u.since ? String(u.since) : '');
 
   useEffect(() => {
-    if (location.state?.editing != null) setEditing(location.state.editing);
+    setEditing(location.state?.editing ?? false);
   }, [location.key]);
 
   const saveEdit = () => {
