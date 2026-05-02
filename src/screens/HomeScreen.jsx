@@ -99,7 +99,7 @@ export default function HomeScreen({ onRequest, onProfile, onPending, user, them
                     <div className={s.ticketsInChat}>
                       <Icon.check s={14} c="var(--success)"/>
                       <span>Bilhetes enviados para o teu chat</span>
-                      <button className={s.openChatBtn} onClick={() => window.Telegram?.WebApp?.openTelegramLink('https://t.me/ArmadaAlvinegraBot')}>
+                      <button className={s.openChatBtn} onClick={() => window.Telegram?.WebApp?.openTelegramLink('https://t.me/furacao_aa_bot')}>
                         Abrir
                       </button>
                     </div>
