@@ -1,24 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import s from './ProfileScreen.module.css';
 import { NeonPanel, GridBackdrop, Scanline } from '../components/atoms.jsx';
 import { Icon } from '../components/Icons.jsx';
 import { getInitials } from '../utils/user.js';
 
 export default function ProfileScreen({ onBack, onLogout, onToggleTheme, theme = 'dark', user, onUpdateUser }) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const u = user || { name: 'Alvinegro', memberId: null, tgHandle: '', since: null };
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(location.state?.editing ?? false);
   const [draftMemberId, setDraftMemberId] = useState(u.memberId || '');
   const [draftSince, setDraftSince] = useState(u.since ? String(u.since) : '');
 
+  useEffect(() => {
+    if (location.state?.editing != null) setEditing(location.state.editing);
+  }, [location.key]);
+
   const saveEdit = () => {
     onUpdateUser?.({ ...u, memberId: draftMemberId || null, since: draftSince ? Number(draftSince) : null });
-    setEditing(false);
+    navigate('/profile', { state: { editing: false }, replace: true });
   };
 
   const cancelEdit = () => {
     setDraftMemberId(u.memberId || '');
     setDraftSince(u.since ? String(u.since) : '');
-    setEditing(false);
+    navigate(-1);
   };
 
   return (
@@ -40,7 +47,7 @@ export default function ProfileScreen({ onBack, onLogout, onToggleTheme, theme =
             <button className={`${s.editActionBtn} ${s.editActionBtnSave}`} onClick={saveEdit}>Guardar</button>
           </div>
         ) : (
-          <button className={s.editActionBtn} onClick={() => setEditing(true)}>Editar</button>
+          <button className={s.editActionBtn} onClick={() => navigate('/profile', { state: { editing: true } })}>Editar</button>
         )}
       </div>
 
