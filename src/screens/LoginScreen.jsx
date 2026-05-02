@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import s from './LoginScreen.module.css';
 import { ArmadaCrest, GridBackdrop, Scanline, NeonPanel, NeonButton } from '../components/atoms.jsx';
+import { getTelegramUser } from '../telegram.js';
 
 export default function LoginScreen({ onLogin }) {
   const [step, setStep] = useState(1);
+  const [name, setName] = useState('');
   const [memberId, setMemberId] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -11,18 +13,21 @@ export default function LoginScreen({ onLogin }) {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      // DEV: saltar verificação de sócio — reverter removendo este bloco e descomentando setStep(2)
-      onLogin({ name: 'Bruno Silva', memberId: '2047', tgHandle: '@brunos_md', since: 2018 });
-      // setStep(2);
-    }, 400);
+      const tgUser = getTelegramUser();
+      if (tgUser) {
+        onLogin({ name: tgUser.name, tgHandle: tgUser.tgHandle, memberId: null, since: null });
+      } else {
+        setStep(2);
+      }
+    }, 300);
   };
 
   const verify = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      onLogin({ name: 'Bruno Silva', memberId: memberId || '2047', tgHandle: '@brunos_md', since: 2018 });
-    }, 900);
+      onLogin({ name: name.trim() || 'Alvinegro', memberId: memberId || null, tgHandle: '', since: null });
+    }, 600);
   };
 
   return (
@@ -46,7 +51,7 @@ export default function LoginScreen({ onLogin }) {
             <img src="/assets/mascote.jpeg" alt=""/>
             <div className={s.mascotOverlay}/>
             <div className={s.mascotCaption}>
-              "{step === 1 ? 'Identifica-te, alvinegro.' : 'Confirma o nº de sócio.'}"
+              "{step === 1 ? 'Identifica-te, alvinegro.' : 'Confirma os teus dados.'}"
             </div>
           </div>
         </div>
@@ -78,9 +83,19 @@ export default function LoginScreen({ onLogin }) {
           {step === 2 && (
             <div className={s.step}>
               <div className={s.stepLabel}>// PASSO 02/02</div>
-              <div className={s.stepTitle}>VERIFICAR SÓCIO</div>
+              <div className={s.stepTitle}>DADOS DE ACESSO</div>
               <div className={s.stepDesc}>
-                Introduz o teu nº de sócio da Armada Alvinegra para associar esta conta.
+                Introduz o teu nome e nº de sócio da Armada Alvinegra.
+              </div>
+
+              <div style={{ marginBottom: 12 }}>
+                <label className={s.memberLabel}>Nome</label>
+                <input
+                  className={s.memberInput}
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  placeholder="Nome completo"
+                />
               </div>
 
               <div style={{ marginBottom: 14 }}>
@@ -93,8 +108,8 @@ export default function LoginScreen({ onLogin }) {
                 />
               </div>
 
-              <NeonButton onClick={verify} disabled={loading || memberId.length < 3} style={{ height: 52 }}>
-                {loading ? 'A validar…' : 'Entrar na Bilheteira'}
+              <NeonButton onClick={verify} disabled={loading || name.trim().length < 2} style={{ height: 52 }}>
+                {loading ? 'A entrar…' : 'Entrar na Bilheteira'}
               </NeonButton>
 
               <button className={s.backBtn} onClick={() => setStep(1)}>← Voltar</button>

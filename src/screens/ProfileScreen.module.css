@@ -266,6 +266,45 @@
   color: #fff;
 }
 
+/* ── Edit actions ── */
+.editActionBtn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted-strong);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.editActionBtnSave {
+  border-color: var(--violet);
+  color: var(--violet);
+}
+
+/* ── Card inputs (edit mode) ── */
+.cardInput {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--violet);
+  border-radius: 6px;
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  padding: 4px 8px;
+  width: 90px;
+  outline: none;
+}
+
+.memberIdEmpty {
+  color: var(--muted);
+  font-size: 22px;
+}
+
 /* ── Logout ── */
 .logoutBtn {
   width: 100%;

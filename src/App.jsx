@@ -4,7 +4,7 @@ import LoginScreen from './screens/LoginScreen.jsx';
 import HomeScreen from './screens/HomeScreen.jsx';
 import ProfileScreen from './screens/ProfileScreen.jsx';
 import RequestScreen from './screens/RequestScreen.jsx';
-import { initTelegram } from './telegram.js';
+import { initTelegram, getTelegramUser } from './telegram.js';
 import { usePersistedState } from './hooks/usePersistedState.js';
 
 function AppRoutes() {
@@ -13,7 +13,13 @@ function AppRoutes() {
   const [status, setStatus] = usePersistedState('aa:status', 'upcoming');
   const navigate = useNavigate();
 
-  useEffect(() => { initTelegram(); }, []);
+  useEffect(() => {
+    initTelegram();
+    if (!user) {
+      const tgUser = getTelegramUser();
+      if (tgUser) setUser({ name: tgUser.name, tgHandle: tgUser.tgHandle, memberId: null, since: null });
+    }
+  }, []);
   useEffect(() => { document.documentElement.setAttribute('data-theme', theme); }, [theme]);
 
   if (!user) {
@@ -55,6 +61,7 @@ function AppRoutes() {
           onToggleTheme={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
           onBack={() => navigate(-1)}
           onLogout={() => { setUser(null); navigate('/login'); }}
+          onUpdateUser={(u) => setUser(u)}
         />
       }/>
       <Route path="*" element={<Navigate to="/" replace/>}/>

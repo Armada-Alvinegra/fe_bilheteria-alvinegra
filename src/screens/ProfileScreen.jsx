@@ -1,10 +1,25 @@
+import { useState } from 'react';
 import s from './ProfileScreen.module.css';
 import { NeonPanel, GridBackdrop, Scanline } from '../components/atoms.jsx';
 import { Icon } from '../components/Icons.jsx';
 import { getInitials } from '../utils/user.js';
 
-export default function ProfileScreen({ onBack, onLogout, onToggleTheme, theme = 'dark', user }) {
-  const u = user || { name: 'Bruno Silva', memberId: '2047', tgHandle: '@brunos_md', since: 2018 };
+export default function ProfileScreen({ onBack, onLogout, onToggleTheme, theme = 'dark', user, onUpdateUser }) {
+  const u = user || { name: 'Alvinegro', memberId: null, tgHandle: '', since: null };
+  const [editing, setEditing] = useState(false);
+  const [draftMemberId, setDraftMemberId] = useState(u.memberId || '');
+  const [draftSince, setDraftSince] = useState(u.since ? String(u.since) : '');
+
+  const saveEdit = () => {
+    onUpdateUser?.({ ...u, memberId: draftMemberId || null, since: draftSince ? Number(draftSince) : null });
+    setEditing(false);
+  };
+
+  const cancelEdit = () => {
+    setDraftMemberId(u.memberId || '');
+    setDraftSince(u.since ? String(u.since) : '');
+    setEditing(false);
+  };
 
   return (
     <div className={s.screen}>
@@ -15,10 +30,18 @@ export default function ProfileScreen({ onBack, onLogout, onToggleTheme, theme =
         <button className={s.backBtn} onClick={onBack}>
           <Icon.back s={18}/>
         </button>
-        <div>
+        <div style={{ flex: 1 }}>
           <div className={s.topBarLabel}>// CARTÃO DE SÓCIO</div>
           <div className={s.topBarTitle}>PERFIL</div>
         </div>
+        {editing ? (
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button className={s.editActionBtn} onClick={cancelEdit}>Cancelar</button>
+            <button className={`${s.editActionBtn} ${s.editActionBtnSave}`} onClick={saveEdit}>Guardar</button>
+          </div>
+        ) : (
+          <button className={s.editActionBtn} onClick={() => setEditing(true)}>Editar</button>
+        )}
       </div>
 
       <div className={s.body}>
@@ -36,11 +59,35 @@ export default function ProfileScreen({ onBack, onLogout, onToggleTheme, theme =
             <div className={s.cardBottom}>
               <div>
                 <div className={s.memberIdLabel}>// Nº DE SÓCIO</div>
-                <div className={s.memberId}>#{u.memberId}</div>
+                {editing ? (
+                  <input
+                    className={s.cardInput}
+                    value={draftMemberId}
+                    onChange={e => setDraftMemberId(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                    placeholder="0000"
+                    autoFocus
+                  />
+                ) : (
+                  <div className={s.memberId}>
+                    {u.memberId ? `#${u.memberId}` : <span className={s.memberIdEmpty}>—</span>}
+                  </div>
+                )}
               </div>
-              <div>
+              <div style={{ textAlign: 'right' }}>
                 <div className={s.sinceLabel}>MEMBRO DESDE</div>
-                <div className={s.sinceValue}>{u.since}</div>
+                {editing ? (
+                  <input
+                    className={s.cardInput}
+                    value={draftSince}
+                    onChange={e => setDraftSince(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                    placeholder="2014"
+                    style={{ textAlign: 'right' }}
+                  />
+                ) : (
+                  <div className={s.sinceValue}>
+                    {u.since || <span className={s.memberIdEmpty}>—</span>}
+                  </div>
+                )}
               </div>
             </div>
           </div>
