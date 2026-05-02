@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import s from './RequestScreen.module.css';
 import { NeonPanel, NeonButton, TeamCrest, GridBackdrop, Scanline } from '../components/atoms.jsx';
 import { Icon } from '../components/Icons.jsx';
@@ -9,10 +9,16 @@ import { validateCC } from '../utils/validation.js';
 
 export default function RequestScreen({ onBack, onSubmit, user, status = 'open' }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const u = user || { name: 'Bruno Silva', memberId: '2047', tgHandle: '@brunos_md' };
   const isAddingToApproved = status === 'approved';
 
   const [submitted, setSubmitted] = useState(location.state?.submitted ?? false);
+
+  // Sync submitted state when navigating back/forward (e.g. back from edit mode)
+  useEffect(() => {
+    if (location.state?.submitted != null) setSubmitted(location.state.submitted);
+  }, [location.key]);
 
   // Form state
   const [beneficiary, setBeneficiary] = useState({ mode: 'self', name: '', doc: '' });
@@ -82,6 +88,7 @@ export default function RequestScreen({ onBack, onSubmit, user, status = 'open' 
     setErrors({});
     onSubmit?.();
     setSubmitted(true);
+    navigate('/request', { state: { submitted: true }, replace: true });
   }
 
   function handleCopy() {
@@ -345,7 +352,7 @@ export default function RequestScreen({ onBack, onSubmit, user, status = 'open' 
           </NeonButton>
         ) : (
           <>
-            <NeonButton onClick={() => setSubmitted(false)} icon={<Icon.edit s={18} c="#fff"/>}>
+            <NeonButton onClick={() => navigate('/request', { state: { submitted: false } })} icon={<Icon.edit s={18} c="#fff"/>}>
               Editar pedido
             </NeonButton>
           </>
